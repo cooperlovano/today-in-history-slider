@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>title</title>
+    <style>
+      body {
+        color: white;
+        background-color: black;
+      }
+      #event_holder {
+        height: 150px;
+      }
+      .maincontain {
+        width: 80%;
+        margin: auto;
+        text-align: center;
+      }
+      .mainRange {
+        width: 100%;
+        margin-top: 20px;
+      }
+      .title {
+        background-color: black;
+        color: white;
+        font-family: "Helvetica", sans-serif;
+        text-align: center;
+        padding: 1px;
+        padding-right: 0px;
+        font-size: 26px;
+        margin-top: 30px;
+        margin-left: 30px;
+        margin-right: 30px;
+      }
+      .start {
+        color: red;
+        float: left;
+        display: inline-block;
+        margin-bottom: 20px;
+      }
+      .end {
+        color: red;
+        float: right;
+        display: inline-block;
+        margin-bottom: 20px;
+      }
+      body {
+        font-size: 26px;
+        font-family: "Helvetica";
+      }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript" src="api.js"></script>
+  </head>
+  <body>
+    <div class="title">
+      <h1><span class="today_holder"></span></h1>
+    </div>
+
+    <div class="maincontain">
+      <h2></h2>
+      <div class="scroller">
+        <p id="scroll_year_holder"></p>
+        <h3 id="event_holder"></h3>
+        <div class="start"><h5 id="year_holder"></h5></div>
+        <div class="end"><h5 id="recent_year_holder"></h5></div>
+        <input
+          id="main"
+          class="mainRange"
+          type="range"
+          min="0"
+          max="100"
+          value="2019"
+        />
+
+        <div>TODAY IN <span style="inline=block" id="displayer"></span></div>
+      </div>
+    </div>
+
+    <script>
+      //history.muffinlabs.com/date);
+      var currentScroll;
+      //jQuery $.ajax method of retreiving data
+      function jsonCallback(json) {
+        //console.log(json);
+        function testFunction(result) {
+          console.log("HI" + result.date);
+        }
+      }
+      $.getJSON("https://history.muffinlabs.com/date?callback=?", function(
+        jsonTest
+      ) {
+        //array length
+        var mapTest = jsonTest.data.Events.length;
+        console.log(mapTest);
+
+        //first year in the current day array
+        var firstYearInsert = document.getElementById("year_holder");
+        firstYearInsert.innerHTML = jsonTest.data.Events[0].year;
+        //most recent year in the current day array
+        var lastYearInsert = document.getElementById("recent_year_holder");
+        var recentYear = jsonTest.data.Events.length - 1;
+        lastYearInsert.innerHTML = jsonTest.data.Events[recentYear].year;
+
+        console.log(currentScroll);
+        //make the maximum slider value the current day array length
+        var newMax = (document.getElementById("main").max =
+          jsonTest.data.Events.length);
+
+        console.log(jsonTest.data.Events);
+
+        //slider info processing
+        var slider = document.getElementById("main");
+        //the lower "TODAY IN _ " area
+        var output = document.getElementById("displayer");
+        //output.innerHTML = slider.value;
+
+        slider.oninput = function() {
+          //insert the current THIS value with inner HTML
+          var currentScroll = this.value;
+          output.innerHTML = jsonTest.data.Events[currentScroll].year;
+
+          //display the event from given array location
+          var eventInsert = document.getElementById("event_holder");
+          eventInsert.innerHTML = jsonTest.data.Events[currentScroll].text;
+
+          //the upper current fact area
+          var array_location = document.getElementById("scroll_year_holder");
+          array_location.innerHTML = jsonTest.data.Events[currentScroll].year;
+        };
+      });
+
+      //current date object
+      var objToday = new Date(),
+        weekday = new Array(
+          "Sunday",
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday"
+        ),
+        dayOfWeek = weekday[objToday.getDay()],
+        domEnder = (function() {
+          var a = objToday;
+          if (/1/.test(parseInt((a + "").charAt(0)))) return "th";
+          a = parseInt((a + "").charAt(1));
+          return 1 == a ? "st" : 2 == a ? "nd" : 3 == a ? "rd" : "th";
+        })(),
+        dayOfMonth =
+          today + (objToday.getDate() < 10)
+            ? "0" + objToday.getDate() + domEnder
+            : objToday.getDate() + domEnder,
+        months = new Array(
+          "January",
+          "February",
+          "March",
+          "April",
+          "May",
+          "June",
+          "July",
+          "August",
+          "September",
+          "October",
+          "November",
+          "December"
+        ),
+        curMonth = months[objToday.getMonth()],
+        curYear = objToday.getFullYear(),
+        curHour =
+          objToday.getHours() > 12
+            ? objToday.getHours() - 12
+            : objToday.getHours() < 10
+            ? "0" + objToday.getHours()
+            : objToday.getHours(),
+        curMinute =
+          objToday.getMinutes() < 10
+            ? "0" + objToday.getMinutes()
+            : objToday.getMinutes(),
+        curSeconds =
+          objToday.getSeconds() < 10
+            ? "0" + objToday.getSeconds()
+            : objToday.getSeconds(),
+        curMeridiem = objToday.getHours() > 12 ? "PM" : "AM";
+      var today = curMonth + " " + dayOfMonth + ", " + curYear;
+      document.getElementsByTagName("span")[0].textContent = today;
+    </script>
+  </body>
+</html>
