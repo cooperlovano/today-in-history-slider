@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <meta charset="UTF-8" />
+    <title>title</title>
+    <style>
+      /*small screens, hide second half */
+      @media screen and (max-width: 989px) {
+        .half {
+          width: 100%;
+        }
+        .second_half {
+          display: none !important;
+        }
+        .maincontain {
+          width: 100%;
+        }
+        .month {
+          font-size: 70px;
+        }
+        .day {
+          font-size: 70px;
+        }
+        .year {
+          font-size: 70px;
+          width: 150px;
+        }
+        #event_holder {
+          height: 135px;
+        }
+        .mainRange::-webkit-slider-thumb {
+          width: 35px;
+          height: 20px;
+          border: none;
+        }
+      }
+      /* large screens */
+      @media (min-width: 990px) {
+        .second_half {
+          display: inline-block;
+          width: 49.5%;
+        }
+        .half {
+          width: 48.5%;
+        }
+        .title {
+          display: none !important;
+        }
+        .maincontain {
+          width: 100%;
+        }
+        .month {
+          font-size: 93px;
+        }
+        .day {
+          font-size: 93px;
+        }
+        .year {
+          font-size: 93px;
+          width: 280px;
+        }
+        #event_holder {
+          height: 100px;
+        }
+        .mainRange::-webkit-slider-thumb {
+          width: 25px;
+          height: 20px;
+          border: none;
+        }
+      }
+
+      .half {
+        display: inline-block;
+      }
+      .second_half {
+        text-align: right;
+        position: absolute;
+        padding-left: 1%;
+      }
+      /* slider customization */
+      .mainRange {
+        -webkit-appearance: none;
+        width: 100%;
+        height: 2px;
+        background: white;
+        outline: none;
+        opacity: 0.8;
+        -webkit-transition: 0.2s;
+        transition: opacity 0.2s;
+      }
+      .mainRange::-moz-range-thumb {
+        width: 35px;
+        height: 25px;
+        background: red;
+        cursor: pointer;
+      }
+
+      .mainRange::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        background: red;
+        cursor: pointer;
+      }
+
+      body {
+        color: white;
+        background-color: black;
+        font-family: Helvetica Neue;
+        font-weight: 400;
+        font-size: 26px;
+        font-family: "Helvetica Neue";
+      }
+      /* text area for the current fact */
+      #event_holder {
+        font-size: 17px;
+        font-weight: 400;
+        text-align: left;
+      }
+
+      h5#recent_year_holder {
+        margin: 0px;
+        transform: rotate(-90deg);
+        margin-right: -18px;
+      }
+      h5#first_year_holder {
+        margin: 0px;
+        transform: rotate(-90deg);
+        margin-left: -15px;
+      }
+      .mainRange {
+        width: 100%;
+        margin-top: 20px;
+      }
+      .month {
+        font-weight: 500;
+        margin-top: -20px;
+        margin: 0px;
+        display: inline-block;
+      }
+      .day {
+        font-weight: 500;
+        margin: 0px;
+      }
+      .year {
+        color: red;
+        font-weight: 500;
+        margin: 0px;
+        display: inline-block;
+      }
+      .title {
+        display: inline-block;
+        margin-top: 10px;
+        color: red;
+        font-family: "Helvetica Neue", sans-serif;
+        font-weight: 400;
+        font-size: 17px;
+        margin: 0px;
+        float: right;
+        text-align: right;
+      }
+      .fullscreen_title {
+        display: inline-block;
+        margin-top: 10px;
+        color: white;
+        font-family: "Helvetica Neue", sans-serif;
+        font-weight: 400;
+        font-size: 17px;
+        margin: 0px;
+        height: 107px;
+        text-align: right;
+        float: right;
+      }
+      .start {
+        color: red;
+        float: left;
+        display: inline-block;
+        margin-bottom: 20px;
+      }
+      .end {
+        color: red;
+        float: right;
+        display: inline-block;
+        margin-bottom: 20px;
+      }
+
+      hr {
+        margin: 0;
+      }
+      .small_describer {
+        display: inline-block;
+        font-size: 17px;
+        font-weight: 400;
+        float: right;
+        margin-top: 10px;
+      }
+      .top1 {
+        width: 100%;
+        height: 107px;
+        font-size: 19px;
+        margin-top: -20px;
+        margin: 0px;
+        display: inline-block;
+      }
+      .title_link {
+        color: red;
+        display: inline-block;
+        margin-top: 10px;
+        font-weight: 400;
+        font-size: 17px;
+        margin: 0px;
+        float: right;
+      }
+      .birth_title {
+        color: red;
+        display: inline-block;
+        margin-top: 10px;
+        font-weight: 400;
+        font-size: 17px;
+        height: 107px;
+        margin: 0px;
+        float: right;
+      }
+      .wiki_links {
+        display: inline-block;
+        margin-top: 10px;
+        color: red;
+        font-family: "Helvetica Neue", sans-serif;
+        font-weight: 400;
+        font-size: 17px;
+        margin: 0px;
+        text-align: right;
+      }
+      h4.wiki_links:hover {
+        color: maroon;
+      }
+      .subsidiary_link {
+        color: grey;
+        font-weight: 400;
+        text-decoration: none;
+      }
+      .subsidiary_link:hover {
+        color: white;
+      }
+      .credit {
+        display: inline-block;
+        margin-top: 10px;
+        color: white;
+        font-family: "Helvetica Neue", sans-serif;
+        font-weight: 400;
+        font-size: 17px;
+        margin: 0px;
+        text-align: right;
+        float: right;
+        position: fixed;
+        bottom: 10px;
+        right: 10px;
+      }
+      .one_third {
+        display: inline-block;
+        width: 31%;
+        margin-left: 0.9%;
+      }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript" src="api.js"></script>
+  </head>
+  <body>
+    <div class="half">
+      <h1 class="month" id="month_holder"></h1>
+      <h4 class="title">scroll through<br />today in history</h4>
+      <hr />
+      <h1 class="day" id="day_holder"></h1>
+      <hr />
+      <h1 class="year" id="year_holder"></h1>
+      <h4 id="years_since_holder" class="small_describer"></h4>
+      <hr />
+
+      <div class="maincontain">
+        <h2></h2>
+        <div class="scroller">
+          <h3 id="event_holder"></h3>
+          <div class="start"><h5 id="first_year_holder"></h5></div>
+          <div class="end"><h5 id="recent_year_holder"></h5></div>
+          <input
+            id="main"
+            class="mainRange"
+            type="range"
+            min="0"
+            max="100"
+            value="20"
+          />
+
+          <div><span id="displayer"></span></div>
+          <h4 class="fullscreen_title">
+            learn more about<br />this event:<br /><span
+              id="links_holder"
+            ></span>
+          </h4>
+        </div>
+      </div>
+    </div>
+
+    <div class="second_half">
+      <div class="top1">
+        <a href="file:///Users/cooperlovano/Desktop/database_project/index.html"
+          ><h4 class="title_link">scroll through<br />today in history</h4></a
+        >
+      </div>
+      <hr />
+      <div class="top1"></div>
+      <hr />
+      <div class="top1">
+        <div class="one_third">
+          <h4 class="birth_title">born<br />on this day</h4>
+        </div>
+        <div class="one_third">
+          <h4 class="fullscreen_title" id="birth1"></h4>
+        </div>
+        <div class="one_third">
+          <h4 class="fullscreen_title" id="birth2"></h4>
+        </div>
+      </div>
+      <hr />
+      <div class="top1">
+        <div class="one_third">
+          <h4 class="birth_title">died<br />on this day</h4>
+        </div>
+        <div class="one_third">
+          <h4 class="fullscreen_title" id="death1"></h4>
+        </div>
+        <div class="one_third">
+          <h4 class="fullscreen_title" id="death2"></h4>
+        </div>
+      </div>
+      <h4 class="credit">
+        this site was developed by
+        <a
+          class="subsidiary_link"
+          target="_blank"
+          href="https://cooperlovano.design"
+          >Cooper Lovano</a
+        >
+        in large<br />part thanks to
+        <a class="subsidiary_link" target="_blank" href="http://muffinlabs.com/"
+          >Colin Mitchell's</a
+        >
+        wikipedia-parsing
+        <a
+          class="subsidiary_link"
+          target="_blank"
+          href="https://history.muffinlabs.com/"
+          >API</a
+        >
+      </h4>
+    </div>
+
+    <script>
+      //history.muffinlabs.com/date);
+      var currentScroll;
+
+      $.getJSON("https://history.muffinlabs.com/date?callback=?", function(
+        jsonTest
+      ) {
+        //slider info processing
+        var slider = document.getElementById("main");
+
+        //assign the first Current Year Value to the middle of array
+        var middleArrayIndex = Math.ceil(jsonTest.data.Events.length / 2);
+        var middleArrayYear = jsonTest.data.Events[middleArrayIndex].year;
+
+        //the upper current fact area
+        var array_location = document.getElementById("year_holder");
+        array_location.innerHTML = jsonTest.data.Events[middleArrayIndex].year;
+        //the text content for the first fact shown
+        var eventInsert = document.getElementById("event_holder");
+        eventInsert.innerHTML = jsonTest.data.Events[middleArrayIndex].text;
+
+        //array length
+        var mapTest = jsonTest.data.Events.length;
+
+        //ends of the spectrum
+        //first year in the current day array
+        var firstAvailableYear = jsonTest.data.Events[0].year;
+        var firstYearInsert = document.getElementById("first_year_holder");
+        firstYearInsert.innerHTML = firstAvailableYear;
+        //most recent year in the array
+        var lastYearInsert = document.getElementById("recent_year_holder");
+        var recentYear = jsonTest.data.Events.length - 1;
+        lastYearInsert.innerHTML = jsonTest.data.Events[recentYear].year;
+
+        //make the maximum slider value the current day array length
+        var newMax = (document.getElementById("main").max =
+          jsonTest.data.Events.length - 1);
+        //set initial slider input 'value' property
+        var initialValue = (document.getElementById(
+          "main"
+        ).value = middleArrayIndex);
+
+        //fist value displayed for the NUMBER OF YEARS AGO
+        //get the current year
+        var calcYear = new Date();
+        thisYear = calcYear.getFullYear();
+        //subtract current year from the currently selected historical date
+        var sinceThen = thisYear - jsonTest.data.Events[middleArrayIndex].year;
+        var insertSinceThen = document.getElementById("years_since_holder");
+        insertSinceThen.innerHTML = sinceThen + " years ago";
+
+        //BIRTH
+        //a birth entry taken from the middle of the array
+        var birthArrayLength = jsonTest.data.Births.length - 1;
+        var middleBirthArray = Math.ceil(birthArrayLength / 2);
+        //pull out the year and text from the JSON file
+        var firstBornYear = jsonTest.data.Births[middleBirthArray].year;
+        var firstBornText = jsonTest.data.Births[middleBirthArray].text;
+        var insertFirstBorn = document.getElementById("birth1");
+        //bind to the #birth1 div
+        insertFirstBorn.innerHTML = firstBornYear + "<br />" + firstBornText;
+        var lastBornYear = jsonTest.data.Births[birthArrayLength].year;
+        var lastBornText = jsonTest.data.Births[birthArrayLength].text;
+        //pull out the year and text from the JSON file
+        var insertLastBorn = document.getElementById("birth2");
+        insertLastBorn.innerHTML = lastBornYear + "<br />" + lastBornText;
+
+        //DEATHS
+        //the first birth entry
+        var deathArrayLength = jsonTest.data.Deaths.length - 1;
+        var middleDeathArray = Math.ceil(deathArrayLength / 2);
+        var randomNum1 = Math.ceil(Math.random() * 10) + 1;
+        console.log(randomNum1);
+        var randomDeath1 = Math.ceil(jsonTest.data.Deaths.length / randomNum1);
+        var firstDeathYear = jsonTest.data.Deaths[randomDeath1].year;
+        var firstDeathText = jsonTest.data.Deaths[randomDeath1].text;
+        var insertFirstDeath = document.getElementById("death1");
+        insertFirstDeath.innerHTML = firstDeathYear + "<br />" + firstDeathText;
+        var lastDeathYear = jsonTest.data.Deaths[deathArrayLength].year;
+        var lastDeathText = jsonTest.data.Deaths[deathArrayLength].text;
+        var insertLastDeath = document.getElementById("death2");
+        insertLastDeath.innerHTML = lastDeathYear + "<br />" + lastDeathText;
+
+        //display the first set of wikipedia links
+        //the wikipedia links
+        var j;
+        var printedText = "";
+        var textLink = " ";
+        for (
+          j = 0;
+          j < jsonTest.data.Events[middleArrayIndex].links.length;
+          j++
+        ) {
+          printedText +=
+            "<a href=" +
+            jsonTest.data.Events[middleArrayIndex].links[j].link +
+            " target='_blank'><h4 class='wiki_links'>" +
+            jsonTest.data.Events[middleArrayIndex].links[j].title +
+            "</h4><br />";
+
+          placeLinks = document.getElementById("links_holder");
+          placeLinks.innerHTML = printedText;
+        }
+
+        //ON SLIDER INPUT
+        slider.oninput = function() {
+          //isolate the current scroll location
+          var currentScroll = this.value;
+
+          //display the event from given array location
+          var eventInsert = document.getElementById("event_holder");
+          eventInsert.innerHTML = jsonTest.data.Events[currentScroll].text;
+
+          //the upper current fact area
+          var array_location = document.getElementById("year_holder");
+          array_location.innerHTML = jsonTest.data.Events[currentScroll].year;
+
+          //updated values for the NUMBER OF YEAR AGO section
+          sinceThen = thisYear - jsonTest.data.Events[currentScroll].year;
+          insertSinceThen.innerHTML = sinceThen + " years ago";
+
+          //the wikipedia links
+          var i;
+          var printedText = "";
+          var textLink = " ";
+          for (
+            i = 0;
+            i < jsonTest.data.Events[currentScroll].links.length;
+            i++
+          ) {
+            printedText +=
+              "<a href=" +
+              jsonTest.data.Events[currentScroll].links[i].link +
+              " target='_blank'><h4 class='wiki_links'>" +
+              jsonTest.data.Events[currentScroll].links[i].title +
+              "</h4><br />";
+
+            placeLinks = document.getElementById("links_holder");
+            placeLinks.innerHTML = printedText;
+          }
+
+          //var links = jsonTest.data.Events[currentScroll].links;
+          //console.log(printedText);
+        };
+      });
+
+      //current date object
+      var objToday = new Date(),
+        weekday = new Array(
+          "Sunday",
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday"
+        ),
+        dayOfWeek = weekday[objToday.getDay()],
+        domEnder = (function() {
+          var a = objToday;
+          if (/1/.test(parseInt((a + "").charAt(0)))) return "th";
+          a = parseInt((a + "").charAt(1));
+          return 1 == a ? "st" : 2 == a ? "nd" : 3 == a ? "rd" : "th";
+        })(),
+        dayOfMonth =
+          today + (objToday.getDate() < 10)
+            ? "0" + objToday.getDate() + domEnder
+            : objToday.getDate() + domEnder,
+        months = new Array(
+          "Jan.",
+          "Feb.",
+          "Mar",
+          "Apr.",
+          "May",
+          "Jun.",
+          "Jul.",
+          "Aug.",
+          "Sep.",
+          "Oct.",
+          "Nov.",
+          "Dec."
+        ),
+        curMonth = months[objToday.getMonth()],
+        curYear = objToday.getFullYear(),
+        curHour =
+          objToday.getHours() > 12
+            ? objToday.getHours() - 12
+            : objToday.getHours() < 10
+            ? "0" + objToday.getHours()
+            : objToday.getHours(),
+        curMinute =
+          objToday.getMinutes() < 10
+            ? "0" + objToday.getMinutes()
+            : objToday.getMinutes(),
+        curSeconds =
+          objToday.getSeconds() < 10
+            ? "0" + objToday.getSeconds()
+            : objToday.getSeconds(),
+        curMeridiem = objToday.getHours() > 12 ? "PM" : "AM";
+      var today = curMonth + " " + dayOfMonth + ", " + curYear;
+      document.getElementById("month_holder").textContent = curMonth;
+      document.getElementById("day_holder").textContent = dayOfMonth;
+    </script>
+  </body>
+</html>
